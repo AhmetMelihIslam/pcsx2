@@ -57,7 +57,6 @@ u32 PADreadPort1(PadDataS* pads);
 u32 PADreadPort2(PadDataS* pads);
 void PADconfigure();
 s32 PADfreeze(int mode, freezeData* data);
-s32 PADsetSlot(u8 port, u8 slot);
 s32 PADqueryMtap(u8 port);
 void PADsetSettingsDir(const char* dir);
 void PADDoFreezeOut(void* dest);

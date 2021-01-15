@@ -25,6 +25,7 @@
 #include "InputManager.h"
 #include "PADConfig.h"
 #include "PAD.h"
+#include "Sio.h"
 
 #define PADdefs
 
@@ -59,6 +60,8 @@ WndProcEater hWndTopProc;
 // button with keyboard focus.
 WndProcEater hWndButtonProc;
 #endif
+
+extern int pad_slots[2];
 
 // Keeps the various sources for Update polling (PADpoll, PADupdate, etc) from wreaking
 // havoc on each other...
@@ -213,8 +216,6 @@ public:
 	u8 enabled;
 } pads[2][4];
 
-// Active slots for each port.
-int slots[2];
 // Which ports we're running on.
 int portInitialized[2];
 
@@ -859,7 +860,7 @@ s32 PADinit()
 
 		for (int slot = 0; slot < 4; slot++)
 			ResetPad(port, slot);
-		slots[port] = 0;
+		pad_slots[port] = 0;
 		portInitialized[port] = 1;
 
 		query.lastByte = 1;
@@ -1112,13 +1113,13 @@ u8 PADstartPoll(int port)
 	{
 		query.queryDone = 0;
 		query.port = port;
-		query.slot = slots[port];
+		query.slot = pad_slots[port];
 		query.numBytes = 2;
 		query.lastByte = 0;
 		DEBUG_IN(port);
 		DEBUG_OUT(0xFF);
-		DEBUG_IN(slots[port]);
-		DEBUG_OUT(pads[port][slots[port]].enabled);
+		DEBUG_IN(pad_slots[port]);
+		DEBUG_OUT(pads[port][pad_slots[port]].enabled);
 		return 0xFF;
 	}
 	else
@@ -1637,7 +1638,7 @@ s32 PADfreeze(int mode, freezeData* data)
 			}
 
 			if (pdata.slot[port] < 4)
-				slots[port] = pdata.slot[port];
+				pad_slots[port] = pdata.slot[port];
 		}
 	}
 	else if (mode == FREEZE_SAVE)
@@ -1663,7 +1664,7 @@ s32 PADfreeze(int mode, freezeData* data)
 				pdata.padData[port][slot] = pads[port][slot];
 			}
 
-			pdata.slot[port] = slots[port];
+			pdata.slot[port] = pad_slots[port];
 		}
 	}
 	else
@@ -1697,21 +1698,6 @@ s32 PADqueryMtap(u8 port)
 	if (port > 1)
 		return 0;
 	return config.multitap[port];
-}
-
-s32 PADsetSlot(u8 port, u8 slot)
-{
-	port--;
-	slot--;
-	if (port > 1 || slot > 3)
-	{
-		return 0;
-	}
-	// Even if no pad there, record the slot, as it is the active slot regardless.
-	slots[port] = slot;
-	// First slot always allowed.
-	// return pads[port][slot].enabled | !slot;
-	return 1;
 }
 
 void PADDoFreezeOut(void* dest)

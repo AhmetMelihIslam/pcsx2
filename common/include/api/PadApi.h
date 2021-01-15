@@ -78,14 +78,6 @@ PADfreeze(u8 mode, freezeData *data);
 EXPORT_C_(s32)
 PADqueryMtap(u8 port);
 
-// Sets the active pad slot for the specified port.
-// Both numbers are 1-based indices.  Should return 0 if there's no
-// pad on the specified slot.  Even if PADqueryMtap(port) returns 0,
-// should handle this properly for slot != 1, so emulator can allow
-// Multitap to be enabled/disabled elsewhere.
-EXPORT_C_(s32)
-PADsetSlot(u8 port, u8 slot);
-
 EXPORT_C_(void)
 PADconfigure();
 EXPORT_C_(void)
