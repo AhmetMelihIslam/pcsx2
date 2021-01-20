@@ -1,3 +1,4 @@
+# Database should be updated from upstream, would be nice to rely on submodule instead.
 # Mac OS, Linux - from # https://github.com/gabomdq/
 # Mac OS X
 030000008f0e00000300000009010000,2In1 USB Joystick,a:b2,b:b1,back:b8,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,leftshoulder:b4,leftstick:b10,lefttrigger:b6,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b11,righttrigger:b7,rightx:a2,righty:a3,start:b9,x:b3,y:b0,platform:Mac OS X,
